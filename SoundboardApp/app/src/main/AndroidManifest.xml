@@ -2,6 +2,27 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ca.nait.dmit2504.soundboardapp">
 
+    /** References:
+            NavDrawer - https://guides.codepath.com/android/Fragment-Navigation-Drawer
+        - implementation 'com.google.android.material:material:1.0.0'    (may not need)
+        - Create menu with a Toolbar
+        - Disable default Toolbar to use as ActionBar in styles.xml
+        - Create drawer layout file with androidx.drawerlayout.widget.DrawerLayout as root
+        - Add code to enable nav drawer functionality
+
+            Optional
+        - Create nav header layout for NavigationView to reference (in activity_main)
+        - Add code to change icon to animated hamburger menu
+        - Translucent Status Bar: name="android:windowTranslucentStatus">true in styles.xml
+     */
+
+    /** Color locations:
+            R/layout
+        - styles.xml
+            R/values
+        - nav_header.xml
+    */
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home_fragment"
+            android:title="@string/home"/>
+        <item
+            android:id="@+id/nav_files_fragment"
+            android:title="@string/files"/>
+        <item
+            android:id="@+id/nav_settings_fragment"
+            android:title="@string/settings"/>
+    </group>
+</menu>
