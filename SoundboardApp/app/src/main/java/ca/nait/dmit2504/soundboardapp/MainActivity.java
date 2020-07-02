@@ -8,6 +8,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -50,20 +51,20 @@ public class MainActivity extends AppCompatActivity {
                 switch(menuItem.getItemId()) {
                     // TODO: Create fragments
                     case R.id.nav_home_fragment:
-//                        fragmentClass =
+                        fragmentClass = HomeFragment.class;
                         break;
                     case R.id.nav_files_fragment:
-//                        fragmentClass =
+                        fragmentClass = FilesFragment.class;
                         break;
                     case R.id.nav_settings_fragment:
-//                        fragmentClass =
+                        fragmentClass = SettingsFragment.class;
                         break;
                     default:
-//                        fragmentClass =
-
+                        fragmentClass = HomeFragment.class;
                 }
                 try {
-//                    fragment = fragmentClass.newInstance();
+                    // Cast the class object into fragment
+                    fragment = (Fragment)fragmentClass.newInstance();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -107,7 +108,18 @@ public class MainActivity extends AppCompatActivity {
         // DrawerLayout listener
         mDrawerLayout.addDrawerListener(mActionBarDrawerToggle);
 
+        // Set home as default fragment
+        setDefaultFragment();
+
+        // Drawer content item selected listener
         setupDrawerContent(mDrawerNavigationView);
+    }
+
+    private void setDefaultFragment() {
+        HomeFragment homeFragment = new HomeFragment();
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.main_frameLayout, homeFragment).commit();
     }
 
     // onPostCreate = activity start-up completed after onStart()
