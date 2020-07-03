@@ -7,14 +7,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.MenuItem;
-import android.widget.Toolbar;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                         fragmentClass = HomeFragment.class;
                         break;
                     case R.id.nav_files_fragment:
-                        fragmentClass = FilesFragment.class;
+                        fragmentClass = SetupFragment.class;
                         break;
                     case R.id.nav_settings_fragment:
                         fragmentClass = SettingsFragment.class;
@@ -113,6 +113,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Drawer content item selected listener
         setupDrawerContent(mDrawerNavigationView);
+
+        // Setup ViewModel for MainActivity
+        MainActivityViewModel viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
     }
 
     private void setDefaultFragment() {

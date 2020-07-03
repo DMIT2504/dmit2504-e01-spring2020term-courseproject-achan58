@@ -6,7 +6,7 @@
             android:title="@string/home"/>
         <item
             android:id="@+id/nav_files_fragment"
-            android:title="@string/files"/>
+            android:title="@string/setup"/>
         <item
             android:id="@+id/nav_settings_fragment"
             android:title="@string/settings"/>
