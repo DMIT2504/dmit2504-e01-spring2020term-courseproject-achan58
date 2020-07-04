@@ -1,9 +1,21 @@
 package ca.nait.dmit2504.soundboardapp;
 
+import android.media.MediaPlayer;
+
 public class Audio {
 
     private String name;
     private String audioFilePath;
+
+    public MediaPlayer getAudioPlayer() {
+        return audioPlayer;
+    }
+
+    public void setAudioPlayer(MediaPlayer audioPlayer) {
+        this.audioPlayer = audioPlayer;
+    }
+
+    private MediaPlayer audioPlayer;
 
     public String getName() {
         return name;

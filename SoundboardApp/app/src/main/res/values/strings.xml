@@ -31,4 +31,8 @@
     <string name="a3">A3</string>
     <string name="upload">upload</string>
     <string name="upload_text" />
+    <string name="upload_audio_file">Upload audio file</string>
+    <string name="unable_to_read_file">Unable to read file.</string>
+    <string name="file_successfully_uploaded">File successfully uploaded</string>
+    <string name="upload_audio_file">Upload audio file</string>
 </resources>

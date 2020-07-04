@@ -48,22 +48,39 @@
 - http://developer.android.com/reference/android/content/res/AssetManager.html
 
         - getAssets is an object of AssetManager
-        - requires context of activity when used inside a fragment (getActivity().getAssets())
+        - requires Activity (*Context) when used inside a Fragment (getActivity().getAssets())
+
+        *Activity extends context, so we pass the Fragment's current Activity
 
 
 
 ## MediaPlayer
 - https://developer.android.com/training/data-storage/shared/media
 - https://stackoverflow.com/questions/30100083/how-to-play-audio-file-in-android-from-internal-memory-of-phone
-- https://developer.android.com/training/data-storage/shared/documents-files
 
-        - In manifest, get permission: READ_EXTERNAL_STORAGE
-        - In code, ask user for permission (for api23+ devices)
         - MediaPlayer should be a global variable, or else garbage collection will dispose before audio is finished
         - .release() MediaPlayer instances when finished to release resources
 
 
 ## Accessing external storage
+- https://developer.android.com/training/data-storage/shared/documents-files
+- https://developer.android.com/training/data-storage/shared/media#java
+
+        - In manifest, get permission: READ_EXTERNAL_STORAGE
+        - In code, ask user for permission (for api23+ devices)
+        - *Warning* Android 4.4+ returns a different format uri when using Intent.ACTION_GET_CONTENT
+        - *Warning* Android 10+ has scoped storage access, cannot read/write files from/to external storage directly
+        - get permission
+        - startActivityForResult on an Intent.ACTION_GET_CONTENT (allows user to choose file)
+        - obtain results in onActivityReult method
+        - check result code and request codes
+        - API < 19: use MediaStore.Audio.Media.DATA 
+                - cursor to search for the DATA column from MediaStore to get file name
+        - API >= 19: cannot use MediaStore.Audio.Media.DATA anymore, comes back null (new uri format possibly incompatible)
+                - cursor on getContentResolver() query for OpenableColumns.DISPLAY_NAME to get file name
+        - API 29+: cannot read path of file
+                - save MediaPlayer.setDataSource(context, uri) instead
+
 
 ## MediaRecorder
 - https://developer.android.com/guide/topics/media/mediarecorder
