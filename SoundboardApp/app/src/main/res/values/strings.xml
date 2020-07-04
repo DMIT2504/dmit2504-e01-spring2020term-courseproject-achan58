@@ -24,4 +24,9 @@
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="setup">Setup</string>
+    <string name="no_default_audio_found">No default audio found.</string>
+    <string name="ioexception">IOException</string>
+    <string name="a1">A1</string>
+    <string name="a2">A2</string>
+    <string name="a3">A3</string>
 </resources>

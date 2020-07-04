@@ -47,6 +47,9 @@
 ## AssetManager for reading assets included in APK
 - http://developer.android.com/reference/android/content/res/AssetManager.html
 
+        - getAssets is an object of AssetManager
+        - requires context of activity when used inside a fragment (getActivity().getAssets())
+
 
 
 ## MediaPlayer and Accessing Media Files from Shared Storage
@@ -56,6 +59,8 @@
 
         - In manifest, get permission: READ_EXTERNAL_STORAGE
         - In code, ask user for permission (for api23+ devices)
+        - MediaPlayer should be a global variable, or else garbage collection will dispose before audio is finished
+        - .release() MediaPlayer instances when finished to release resources
 
 ## MediaRecorder
 - https://developer.android.com/guide/topics/media/mediarecorder

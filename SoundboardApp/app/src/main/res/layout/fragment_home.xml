@@ -22,7 +22,8 @@
             app:layout_constraintEnd_toStartOf="@+id/launchpad_A2_imageButton"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:soundEffectsEnabled="false"/>
 
         <ImageButton
             android:id="@+id/launchpad_A2_imageButton"
@@ -34,7 +35,8 @@
             app:layout_constraintEnd_toStartOf="@+id/launchpad_A3_imageButton"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/launchpad_A1_imageButton"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:soundEffectsEnabled="false"/>
 
         <ImageButton
             android:id="@+id/launchpad_A3_imageButton"
@@ -46,7 +48,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/launchpad_A2_imageButton"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:soundEffectsEnabled="false"/>
 
         <ImageButton
             android:id="@+id/launchpad_B1_imageButton"
@@ -58,7 +61,8 @@
             app:layout_constraintEnd_toStartOf="@+id/launchpad_A2_imageButton"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/launchpad_A1_imageButton" />
+            app:layout_constraintTop_toBottomOf="@+id/launchpad_A1_imageButton"
+            android:soundEffectsEnabled="false"/>
 
         <ImageButton
             android:id="@+id/launchpad_B2_imageButton"
@@ -70,7 +74,8 @@
             app:layout_constraintEnd_toStartOf="@+id/launchpad_A3_imageButton"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/launchpad_A1_imageButton"
-            app:layout_constraintTop_toBottomOf="@+id/launchpad_A2_imageButton" />
+            app:layout_constraintTop_toBottomOf="@+id/launchpad_A2_imageButton"
+            android:soundEffectsEnabled="false"/>
 
         <ImageButton
             android:id="@+id/launchpad_B3_imageButton"
@@ -82,7 +87,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/launchpad_A2_imageButton"
-            app:layout_constraintTop_toBottomOf="@+id/launchpad_A3_imageButton" />
+            app:layout_constraintTop_toBottomOf="@+id/launchpad_A3_imageButton"
+            android:soundEffectsEnabled="false"/>
 
         <ImageButton
             android:id="@+id/launchpad_C1_imageButton"
@@ -94,7 +100,8 @@
             app:layout_constraintEnd_toStartOf="@+id/launchpad_A2_imageButton"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/launchpad_B1_imageButton" />
+            app:layout_constraintTop_toBottomOf="@+id/launchpad_B1_imageButton"
+            android:soundEffectsEnabled="false"/>
 
         <ImageButton
             android:id="@+id/launchpad_C2_imageButton"
@@ -106,7 +113,8 @@
             app:layout_constraintEnd_toStartOf="@+id/launchpad_A3_imageButton"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/launchpad_A1_imageButton"
-            app:layout_constraintTop_toBottomOf="@+id/launchpad_B2_imageButton" />
+            app:layout_constraintTop_toBottomOf="@+id/launchpad_B2_imageButton"
+            android:soundEffectsEnabled="false"/>
 
         <ImageButton
             android:id="@+id/launchpad_C3_imageButton"
@@ -118,7 +126,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/launchpad_A2_imageButton"
-            app:layout_constraintTop_toBottomOf="@+id/launchpad_B3_imageButton" />
+            app:layout_constraintTop_toBottomOf="@+id/launchpad_B3_imageButton"
+            android:soundEffectsEnabled="false"/>
 
         <ImageButton
             android:id="@+id/launchpad_D1_imageButton"
@@ -130,7 +139,8 @@
             app:layout_constraintEnd_toStartOf="@+id/launchpad_A2_imageButton"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/launchpad_C1_imageButton" />
+            app:layout_constraintTop_toBottomOf="@+id/launchpad_C1_imageButton"
+            android:soundEffectsEnabled="false"/>
 
         <ImageButton
             android:id="@+id/launchpad_D2_imageButton"
@@ -142,7 +152,8 @@
             app:layout_constraintEnd_toStartOf="@+id/launchpad_A3_imageButton"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/launchpad_A1_imageButton"
-            app:layout_constraintTop_toBottomOf="@+id/launchpad_C2_imageButton" />
+            app:layout_constraintTop_toBottomOf="@+id/launchpad_C2_imageButton"
+            android:soundEffectsEnabled="false"/>
 
         <ImageButton
             android:id="@+id/launchpad_D3_imageButton"
@@ -154,7 +165,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/launchpad_A2_imageButton"
-            app:layout_constraintTop_toBottomOf="@+id/launchpad_C3_imageButton" />
+            app:layout_constraintTop_toBottomOf="@+id/launchpad_C3_imageButton"
+            android:soundEffectsEnabled="false"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
