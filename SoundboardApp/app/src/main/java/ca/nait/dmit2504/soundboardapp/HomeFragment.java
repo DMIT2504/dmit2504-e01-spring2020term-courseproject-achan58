@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -116,7 +117,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         try {
             List<String> defaultAudioPaths = new ArrayList<>();
             defaultAudioPaths = getAssetFiles("");
-            int index = 0;
+//            int index = 0;
 
             // Set to < 4 because there are currently only 3 default audio files in assets
             if (defaultAudioPaths.size() > 0 && defaultAudioPaths.size() < 4){
@@ -132,21 +133,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     mediaPlayer.prepareAsync();
                     mPad.setPadPlayer(mediaPlayer);
 
-                    switch (index) {
-                        case 0:
-                            mPad.setPadIdentifier(getString(R.string.a1));
-                            break;
-                        case 1:
-                            mPad.setPadIdentifier(getString(R.string.a2));
-                            break;
-                        case 2:
-                            mPad.setPadIdentifier(getString(R.string.a3));
-                            break;
-                        default:
-                            break;
-                    }
+//                    switch (index) {
+//                        case 0:
+//                            mPad.setPadIdentifier(getString(R.string.a1));
+//                            break;
+//                        case 1:
+//                            mPad.setPadIdentifier(getString(R.string.a2));
+//                            break;
+//                        case 2:
+//                            mPad.setPadIdentifier(getString(R.string.a3));
+//                            break;
+//                        default:
+//                            break;
+//                    }
                     mPadList.add(mPad);
-                    index++;
+//                    index++;
                 }
             } else {
                 Log.d(TAG, getString(R.string.no_default_audio_found));
@@ -169,7 +170,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 }
             }
         } catch (IOException ioe) {
-            Log.d(TAG, getString(R.string.ioexception), ioe);
+            ioe.printStackTrace();
         }
         return fileNameList;
     }
@@ -179,6 +180,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         switch(v.getId()) {
             case R.id.launchpad_A1_imageButton:
                 startStopMediaPlayer(mPadList.get(0).getPadPlayer());
+//                mA1ImageButton.setImageDrawable(getResources().getDrawable(R.drawable.launchpad_button_black_green_clicked));
                 break;
             case R.id.launchpad_A2_imageButton:
                 startStopMediaPlayer(mPadList.get(1).getPadPlayer());

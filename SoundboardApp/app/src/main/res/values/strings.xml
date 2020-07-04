@@ -29,4 +29,6 @@
     <string name="a1">A1</string>
     <string name="a2">A2</string>
     <string name="a3">A3</string>
+    <string name="upload">upload</string>
+    <string name="upload_text" />
 </resources>

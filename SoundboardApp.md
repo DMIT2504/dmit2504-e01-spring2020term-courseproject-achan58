@@ -52,7 +52,7 @@
 
 
 
-## MediaPlayer and Accessing Media Files from Shared Storage
+## MediaPlayer
 - https://developer.android.com/training/data-storage/shared/media
 - https://stackoverflow.com/questions/30100083/how-to-play-audio-file-in-android-from-internal-memory-of-phone
 - https://developer.android.com/training/data-storage/shared/documents-files
@@ -62,9 +62,14 @@
         - MediaPlayer should be a global variable, or else garbage collection will dispose before audio is finished
         - .release() MediaPlayer instances when finished to release resources
 
+
+## Accessing external storage
+
 ## MediaRecorder
 - https://developer.android.com/guide/topics/media/mediarecorder
 - https://xjaphx.wordpress.com/2011/10/02/store-and-use-files-in-assets/
+
+        - In manifest get permission: RECORD_AUDIO
 
 # Color locations:
 R/layout
