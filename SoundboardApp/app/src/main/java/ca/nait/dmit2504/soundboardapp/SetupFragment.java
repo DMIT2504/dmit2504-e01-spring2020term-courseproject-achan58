@@ -101,7 +101,7 @@ public class SetupFragment extends Fragment {
             mAudioList = new ArrayList<>();
         }
 
-        // Bind data to spinners
+        // Bind pad spinner
         bindDataToPadSpinner();
 
         // onClick for pad + audio bind
@@ -216,6 +216,11 @@ public class SetupFragment extends Fragment {
         // getViewLifecycleOwner instead of this so that the observer is not bound to the instance of the fragment, allowing it to be unbound when fragment view is destroyed
         mMainActivityViewModel.getPads().observe(getViewLifecycleOwner(), pads -> {
             mPadList = pads;
+        });
+
+        mMainActivityViewModel.getAudioList().observe(getViewLifecycleOwner(), audioList -> {
+           mAudioList = audioList;
+           bindDataToAudioSpinner();
         });
     }
 

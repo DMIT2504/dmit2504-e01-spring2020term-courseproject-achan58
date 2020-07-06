@@ -44,6 +44,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private View mView;
     private Pad mPad;
     private List<Pad> mPadList;
+    private List<Audio> mAudioList;
 
     @Nullable
     @Override
@@ -73,6 +74,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 emptyPad.setActive(false);
                 mPadList.add(emptyPad);
             }
+        }
+        if (mAudioList == null) {
+            mAudioList = new ArrayList<>();
         }
 
         // Set onClickListeners using method reference operators (::)
@@ -136,14 +140,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
+        mMainActivityViewModel.getAudioList().observe(getViewLifecycleOwner(), audioList -> {
+            mAudioList = audioList;
+        });
     }
 
     @Override
     public void onStop() {
         super.onStop();
-
-        // Send List<Pad> to ModelView to maintain items
-        mMainActivityViewModel.setPads(mPadList);
 
         // Release resources when switching fragments
         for (Pad pad : mPadList){
@@ -152,6 +156,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 pad.setPadPlayer(null);
             }
         }
+
+        // Send List<Pad> to ModelView to maintain items
+        mMainActivityViewModel.setPads(mPadList);
+        mMainActivityViewModel.setAudioList(mAudioList);
     }
 
     public void getDefaultAudio() {
