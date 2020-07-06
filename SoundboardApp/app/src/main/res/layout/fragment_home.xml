@@ -16,6 +16,7 @@
             android:id="@+id/launchpad_A1_imageButton"
             android:layout_width="108dp"
             android:layout_height="108dp"
+            android:background="@color/background_black"
             android:contentDescription="@string/launchpad_imagebutton"
             android:soundEffectsEnabled="false"
             android:src="@drawable/launchpad_button_black_a1"
@@ -29,6 +30,7 @@
             android:id="@+id/launchpad_A2_imageButton"
             android:layout_width="108dp"
             android:layout_height="108dp"
+            android:background="@color/background_black"
             android:contentDescription="@string/launchpad_imagebutton"
             android:soundEffectsEnabled="false"
             android:src="@drawable/launchpad_button_black_a2"
@@ -42,6 +44,7 @@
             android:id="@+id/launchpad_A3_imageButton"
             android:layout_width="108dp"
             android:layout_height="108dp"
+            android:background="@color/background_black"
             android:contentDescription="@string/launchpad_imagebutton"
             android:soundEffectsEnabled="false"
             android:src="@drawable/launchpad_button_black_a3"
@@ -55,6 +58,7 @@
             android:id="@+id/launchpad_B1_imageButton"
             android:layout_width="108dp"
             android:layout_height="108dp"
+            android:background="@color/background_black"
             android:contentDescription="@string/launchpad_imagebutton"
             android:soundEffectsEnabled="false"
             android:src="@drawable/launchpad_button_black_b1"
@@ -68,6 +72,7 @@
             android:id="@+id/launchpad_B2_imageButton"
             android:layout_width="108dp"
             android:layout_height="108dp"
+            android:background="@color/background_black"
             android:contentDescription="@string/launchpad_imagebutton"
             android:soundEffectsEnabled="false"
             android:src="@drawable/launchpad_button_black_b2"
@@ -81,6 +86,7 @@
             android:id="@+id/launchpad_B3_imageButton"
             android:layout_width="108dp"
             android:layout_height="108dp"
+            android:background="@color/background_black"
             android:contentDescription="@string/launchpad_imagebutton"
             android:soundEffectsEnabled="false"
             android:src="@drawable/launchpad_button_black_b3"
@@ -94,79 +100,85 @@
             android:id="@+id/launchpad_C1_imageButton"
             android:layout_width="108dp"
             android:layout_height="108dp"
+            android:background="@color/background_black"
             android:contentDescription="@string/launchpad_imagebutton"
+            android:soundEffectsEnabled="false"
             android:src="@drawable/launchpad_button_black_c1"
             app:layout_constraintBottom_toTopOf="@+id/launchpad_D1_imageButton"
             app:layout_constraintEnd_toStartOf="@+id/launchpad_A2_imageButton"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/launchpad_B1_imageButton"
-            android:soundEffectsEnabled="false"/>
+            app:layout_constraintTop_toBottomOf="@+id/launchpad_B1_imageButton" />
 
         <ImageButton
             android:id="@+id/launchpad_C2_imageButton"
             android:layout_width="108dp"
             android:layout_height="108dp"
+            android:background="@color/background_black"
             android:contentDescription="@string/launchpad_imagebutton"
+            android:soundEffectsEnabled="false"
             android:src="@drawable/launchpad_button_black_c2"
             app:layout_constraintBottom_toTopOf="@+id/launchpad_D2_imageButton"
             app:layout_constraintEnd_toStartOf="@+id/launchpad_A3_imageButton"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/launchpad_A1_imageButton"
-            app:layout_constraintTop_toBottomOf="@+id/launchpad_B2_imageButton"
-            android:soundEffectsEnabled="false"/>
+            app:layout_constraintTop_toBottomOf="@+id/launchpad_B2_imageButton" />
 
         <ImageButton
             android:id="@+id/launchpad_C3_imageButton"
             android:layout_width="108dp"
             android:layout_height="108dp"
+            android:background="@color/background_black"
             android:contentDescription="@string/launchpad_imagebutton"
+            android:soundEffectsEnabled="false"
             android:src="@drawable/launchpad_button_black_c3"
             app:layout_constraintBottom_toTopOf="@+id/launchpad_D3_imageButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/launchpad_A2_imageButton"
-            app:layout_constraintTop_toBottomOf="@+id/launchpad_B3_imageButton"
-            android:soundEffectsEnabled="false"/>
+            app:layout_constraintTop_toBottomOf="@+id/launchpad_B3_imageButton" />
 
         <ImageButton
             android:id="@+id/launchpad_D1_imageButton"
             android:layout_width="108dp"
             android:layout_height="108dp"
+            android:background="@color/background_black"
             android:contentDescription="@string/launchpad_imagebutton"
+            android:soundEffectsEnabled="false"
             android:src="@drawable/launchpad_button_black_d1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/launchpad_A2_imageButton"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/launchpad_C1_imageButton"
-            android:soundEffectsEnabled="false"/>
+            app:layout_constraintTop_toBottomOf="@+id/launchpad_C1_imageButton" />
 
         <ImageButton
             android:id="@+id/launchpad_D2_imageButton"
             android:layout_width="108dp"
             android:layout_height="108dp"
+            android:background="@color/background_black"
             android:contentDescription="@string/launchpad_imagebutton"
+            android:soundEffectsEnabled="false"
             android:src="@drawable/launchpad_button_black_d2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/launchpad_A3_imageButton"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/launchpad_A1_imageButton"
-            app:layout_constraintTop_toBottomOf="@+id/launchpad_C2_imageButton"
-            android:soundEffectsEnabled="false"/>
+            app:layout_constraintTop_toBottomOf="@+id/launchpad_C2_imageButton" />
 
         <ImageButton
             android:id="@+id/launchpad_D3_imageButton"
             android:layout_width="108dp"
             android:layout_height="108dp"
+            android:background="@color/background_black"
             android:contentDescription="@string/launchpad_imagebutton"
+            android:soundEffectsEnabled="false"
             android:src="@drawable/launchpad_button_black_d3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/launchpad_A2_imageButton"
-            app:layout_constraintTop_toBottomOf="@+id/launchpad_C3_imageButton"
-            android:soundEffectsEnabled="false"/>
+            app:layout_constraintTop_toBottomOf="@+id/launchpad_C3_imageButton" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

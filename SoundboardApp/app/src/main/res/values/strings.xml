@@ -36,7 +36,7 @@
     <string name="file_successfully_uploaded">File successfully uploaded</string>
     <string name="select_button_to_set_audio_to">Select button to set audio</string>
     <string name="select_audio_to_save_to_button" >Select audio to bind to button</string>
-    <string name="press_to_save_audio_press_again_to_stop">Press to save audio, press again to stop</string>
+    <string name="press_to_save_audio_press_again_to_stop">Tap to record audio, tap again to stop</string>
     <string name="save_pad_audio_combination">Save pad-audio combination</string>
     <string name="save_button_audio_combination">Save button-audio combination</string>
     <string name="b1">B1</string>
@@ -51,4 +51,5 @@
     <string name="select_a_pad">Select pad</string>
     <string name="audio_spinner_item">audio_spinner_item</string>
     <string name="audio_and_pad_bound">Audio and pad bound</string>
+    <string name="this_file_already_exists">This file already exists.</string>
 </resources>

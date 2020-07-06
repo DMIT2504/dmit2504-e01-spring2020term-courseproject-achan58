@@ -200,7 +200,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             files = getActivity().getAssets().list(path);
             if (files.length > 0) {
                 for (String file : files) {
-                    if (file.contains(".mp3") || file.contains(".wav") || file.contains(".m4a")){
+                    // Quick check for some valid file extensions
+                    if (file.contains(".mp3") || file.contains(".wav") || file.contains(".3gp")){
                         fileNameList.add(file);
                     }
                 }
@@ -215,48 +216,52 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.launchpad_A1_imageButton:
-                startStopMediaPlayer(mPadList.get(0).getPadPlayer());
-//                mA1ImageButton.setImageDrawable(getResources().getDrawable(R.drawable.launchpad_button_black_green_clicked));
+                // Start/Stop MediaPlayer
+                startStopMediaPlayer(mPadList.get(0).getPadPlayer(), mA1ImageButton);
+//                mPadList.get(0).getPadPlayer().setOnCompletionListener(mp -> {
+//                    mA1ImageButton.setImageDrawable(getResources().getDrawable(R.drawable.launchpad_button_black_a1));
+//                    mA1ImageButton.setBackgroundColor(getResources().getColor(R.color.background_black));
+//                });
                 break;
             case R.id.launchpad_A2_imageButton:
-                startStopMediaPlayer(mPadList.get(1).getPadPlayer());
+                startStopMediaPlayer(mPadList.get(1).getPadPlayer(), mA2ImageButton);
                 break;
             case R.id.launchpad_A3_imageButton:
-                startStopMediaPlayer(mPadList.get(2).getPadPlayer());
+                startStopMediaPlayer(mPadList.get(2).getPadPlayer(), mA3ImageButton);
                 break;
             case R.id.launchpad_B1_imageButton:
-                startStopMediaPlayer(mPadList.get(3).getPadPlayer());
+                startStopMediaPlayer(mPadList.get(3).getPadPlayer(), mB1ImageButton);
                 break;
             case R.id.launchpad_B2_imageButton:
-                startStopMediaPlayer(mPadList.get(4).getPadPlayer());
+                startStopMediaPlayer(mPadList.get(4).getPadPlayer(), mB2ImageButton);
                 break;
             case R.id.launchpad_B3_imageButton:
-                startStopMediaPlayer(mPadList.get(5).getPadPlayer());
+                startStopMediaPlayer(mPadList.get(5).getPadPlayer(), mB3ImageButton);
                 break;
             case R.id.launchpad_C1_imageButton:
-                startStopMediaPlayer(mPadList.get(6).getPadPlayer());
+                startStopMediaPlayer(mPadList.get(6).getPadPlayer(), mC1ImageButton);
                 break;
             case R.id.launchpad_C2_imageButton:
-                startStopMediaPlayer(mPadList.get(7).getPadPlayer());
+                startStopMediaPlayer(mPadList.get(7).getPadPlayer(), mC2ImageButton);
                 break;
             case R.id.launchpad_C3_imageButton:
-                startStopMediaPlayer(mPadList.get(8).getPadPlayer());
+                startStopMediaPlayer(mPadList.get(8).getPadPlayer(), mC3ImageButton);
                 break;
             case R.id.launchpad_D1_imageButton:
-                startStopMediaPlayer(mPadList.get(9).getPadPlayer());
+                startStopMediaPlayer(mPadList.get(9).getPadPlayer(), mD1ImageButton);
                 break;
             case R.id.launchpad_D2_imageButton:
-                startStopMediaPlayer(mPadList.get(10).getPadPlayer());
+                startStopMediaPlayer(mPadList.get(10).getPadPlayer(), mD2ImageButton);
                 break;
             case R.id.launchpad_D3_imageButton:
-                startStopMediaPlayer(mPadList.get(11).getPadPlayer());
+                startStopMediaPlayer(mPadList.get(11).getPadPlayer(), mD3ImageButton);
                 break;
             default:
                 break;
         }
     }
 
-    private void startStopMediaPlayer(MediaPlayer padPlayer) {
+    private void startStopMediaPlayer(MediaPlayer padPlayer, ImageButton imageButton) {
         // Check if pad has MediaPlayer (Prevents MediaPlayer.isPlaying() on null object)
         if (padPlayer != null) {
             if (padPlayer.isPlaying()) {
@@ -264,6 +269,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 padPlayer.prepareAsync();
             } else {
                 padPlayer.start();
+//                // Change button image and background
+//                imageButton.setImageDrawable(getResources().getDrawable(R.drawable.launchpad_button_black_green_clicked));
+//                imageButton.setBackgroundColor(getResources().getColor(R.color.background_black));
             }
         }
     }

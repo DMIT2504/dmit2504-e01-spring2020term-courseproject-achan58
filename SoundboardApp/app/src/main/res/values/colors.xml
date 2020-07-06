@@ -19,4 +19,6 @@
     <color name="greenPrimary">#1bd902</color>
     <color name="greenPrimaryDark">#1f6e05</color>
     <color name="greenAccent">#8affb9</color>
+    <color name="recording_background">#999B9B</color>
+    <color name="not_recording_background">#D6D7D7</color>
 </resources>

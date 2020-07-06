@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,6 +15,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -50,8 +54,12 @@ public class SetupFragment extends Fragment {
     private static final int REQUEST_AUDIO_FILES_LT19 = 1;
     private static final int REQUEST_AUDIO_FILES_GT19 = 2;
     private static final int RESULT_OK = -1;
-    private static final int REQUEST_PERMISSION = 21;
+    private static final int REQUEST_READ_EXTERNAL_STORAGE_PERMISSION = 21;
+    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 22;
     private static final String READ_EXTERNAL_STORAGE_PERMISSION = Manifest.permission.READ_EXTERNAL_STORAGE;
+    private static final String RECORD_AUDIO_PERMISSION = Manifest.permission.RECORD_AUDIO;
+    private static final String RECORDER_OUTPUT_BASE_FILENAME = "recording";
+    private static final String RECORDER_OUTPUT_EXTENSION = ".3gp";
     private MainActivityViewModel mMainActivityViewModel;
     private View mView;
     private Spinner mPadSpinner;
@@ -60,8 +68,13 @@ public class SetupFragment extends Fragment {
     private Button mUploadButton;
     private ImageButton mRecordImageButton;
     private Intent mUploadFileIntent;
+    private MediaRecorder mMediaRecorder;
     private List<Pad> mPadList;
     private List<Audio> mAudioList;
+    private File mOutputFile;
+    private String mOutputFilename;
+    private boolean mIsRecording;
+    private int mRecordingOutputFilenameIndex = 0;
 
 
     @Nullable
@@ -110,7 +123,7 @@ public class SetupFragment extends Fragment {
 
         // onClick for file upload
         mUploadButton.setOnClickListener(v -> {
-            if (checkPermission()) {
+            if (checkReadExternalStoragePermission()) {
                 // uri returned is different after android 4.4
                 if (Build.VERSION.SDK_INT < 19) {
                     mUploadFileIntent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -121,6 +134,74 @@ public class SetupFragment extends Fragment {
                     mUploadFileIntent.addCategory(Intent.CATEGORY_OPENABLE);
                     mUploadFileIntent.setType("audio/*");
                     startActivityForResult(Intent.createChooser(mUploadFileIntent, getText(R.string.upload_audio_file)), REQUEST_AUDIO_FILES_GT19);
+                }
+            }
+        });
+
+        // onClick for recording
+        mRecordImageButton.setOnClickListener(v -> {
+            if (mIsRecording) {
+                // Change image
+                mRecordImageButton.setImageDrawable(getResources().getDrawable(R.drawable.not_recording, null));
+                mRecordImageButton.setBackgroundColor(getResources().getColor(R.color.not_recording_background));
+                mIsRecording = false;
+
+                // Stop recording and clear resources
+                mMediaRecorder.stop();
+                mMediaRecorder.release();
+                mMediaRecorder = null;
+
+                // Get file uri
+                Audio audio = new Audio();
+                Uri uri;
+
+                // Uri.fromFile() only works on api < 26
+                if (Build.VERSION.SDK_INT < 26) {
+                    uri = Uri.fromFile(mOutputFile);
+                    audio.setName(RECORDER_OUTPUT_BASE_FILENAME + mRecordingOutputFilenameIndex);
+                } else {
+                    // getUriForFile uses FileProvider to get content uri instead of file uri
+                    uri = FileProvider.getUriForFile(getActivity(), "ca.nait.dmit2504.soundboardapp.fileprovider", mOutputFile);
+                    audio.setName(RECORDER_OUTPUT_BASE_FILENAME + mRecordingOutputFilenameIndex);
+                }
+                audio.setAudioPlayerUri(uri);
+                mAudioList.add(audio);
+                bindDataToAudioSpinner();
+            } else {
+                // Check permission
+                if (checkRecordAudioPermission()) {
+                    // Change image back
+                    mRecordImageButton.setImageDrawable(getResources().getDrawable(R.drawable.recording, null));
+                    mRecordImageButton.setBackgroundColor(getResources().getColor(R.color.recording_background));
+                    mIsRecording = true;
+
+                    // Start recording
+                    // getFilesDir() for root of internal storage (does not req permission)
+                    String outputPath = getActivity().getFilesDir().getAbsolutePath();
+                    mOutputFilename = RECORDER_OUTPUT_BASE_FILENAME + mRecordingOutputFilenameIndex + RECORDER_OUTPUT_EXTENSION;
+                    mOutputFile =  new File(outputPath + "/" + mOutputFilename);
+                    mMediaRecorder = new MediaRecorder();
+
+                    mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                    mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                    mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
+                    // Create unique file name for each recording
+                    while (mOutputFile.exists()) {
+                        mRecordingOutputFilenameIndex++;
+                        mOutputFilename = RECORDER_OUTPUT_BASE_FILENAME + mRecordingOutputFilenameIndex + RECORDER_OUTPUT_EXTENSION;
+                        mOutputFile = new File(outputPath + "/" + mOutputFilename);
+                    }
+                    mMediaRecorder.setOutputFile(outputPath + "/" + mOutputFilename);
+
+                    // Prepare MediaRecorder
+                    try {
+                        mMediaRecorder.prepare();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    mMediaRecorder.start();
                 }
             }
         });
@@ -144,28 +225,16 @@ public class SetupFragment extends Fragment {
             Audio audio = new Audio();
             String path;
             String name = "";
-            Uri uri;
+            Uri uri = data.getData();
 
             switch (requestCode) {
                 case REQUEST_AUDIO_FILES_LT19:
-                    uri = data.getData();
-
                     // Get name
                     path = uriToFilePath(uri);
                     File file = new File(path);
                     name = trimExtension(file.getName());
-
-                    name = trimExtension(name);
-
-                    // Set audio properties then save audio to list
-                    trySetAudioToList(audio, name, uri);
-
-                    // Bind new audio to spinner
-                    bindDataToAudioSpinner();
                     break;
                 case REQUEST_AUDIO_FILES_GT19:
-                    uri = data.getData();
-
                     // Get name
                     Cursor cursor = getActivity().getContentResolver().query(uri, null, null, null, null);
                     try {
@@ -175,41 +244,45 @@ public class SetupFragment extends Fragment {
                     } finally {
                         cursor.close();
                     }
-
-                    // Get name alt (if cursor comes back null)
-                    if (name == null && name == "") {
-                        name = uri.getPath();
-                        int cut = name.lastIndexOf('/');
-                        if (cut != -1) {
-                            name = name.substring(cut + 1);
-                        }
-                    }
-
-                    name = trimExtension(name);
-
-                    // Set audio properties then save audio to list
-                    trySetAudioToList(audio, name, uri);
-
-                    // Bind new audio file to spinner
-                    bindDataToAudioSpinner();
                     break;
             }
+            // Trim extension from name
+            name = trimExtension(name);
+
+            // Set audio properties then save audio to list
+            trySetAudioToList(audio, name, uri);
+
+            // Bind new audio file to spinner
+            bindDataToAudioSpinner();
         }
     }
 
     private void trySetAudioToList(Audio audio, String name, Uri uri) {
-        if (name != null && name != "" && uri != null) {
-            audio.setName(name);
-            audio.setAudioPlayerUri(uri);
-            Toast.makeText(getActivity(), getText(R.string.file_successfully_uploaded), Toast.LENGTH_SHORT).show();
-            mAudioList.add(audio);
+        boolean existingAudioCheck = false;
+
+        // Check if audio already exists
+        for (Audio audioFile : mAudioList) {
+            if (audioFile.getName().equals(name)) {
+                existingAudioCheck = true;
+            }
+        }
+        if (!existingAudioCheck) {
+            // Check if values are valid
+            if (name != null && name != "" && uri != null) {
+                audio.setName(name);
+                audio.setAudioPlayerUri(uri);
+                Toast.makeText(getActivity(), getText(R.string.file_successfully_uploaded), Toast.LENGTH_SHORT).show();
+                mAudioList.add(audio);
+            } else {
+                Toast.makeText(getActivity(), getText(R.string.unable_to_read_file), Toast.LENGTH_SHORT).show();
+            }
         } else {
-            Toast.makeText(getActivity(), getText(R.string.unable_to_read_file), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getText(R.string.this_file_already_exists), Toast.LENGTH_SHORT).show();
         }
     }
 
     private String trimExtension(String name) {
-        if (name.contains(".mp3") || name.contains(".wav") || name.contains("m4a")) {
+        if (name.contains(".mp3") || name.contains(".wav") || name.contains(".3gp")) {
             return name.substring(0, name.length() - 4);
         } else {
             return name;
@@ -231,11 +304,20 @@ public class SetupFragment extends Fragment {
         return path;
     }
 
-    private boolean checkPermission() {
+    private boolean checkReadExternalStoragePermission() {
         if (ActivityCompat.checkSelfPermission(getContext(), READ_EXTERNAL_STORAGE_PERMISSION) == PackageManager.PERMISSION_GRANTED) {
             return true;
         } else {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{READ_EXTERNAL_STORAGE_PERMISSION}, REQUEST_PERMISSION);
+            ActivityCompat.requestPermissions(getActivity(), new String[]{READ_EXTERNAL_STORAGE_PERMISSION}, REQUEST_READ_EXTERNAL_STORAGE_PERMISSION);
+            return false;
+        }
+    }
+
+    private boolean checkRecordAudioPermission() {
+        if (ActivityCompat.checkSelfPermission(getContext(), RECORD_AUDIO_PERMISSION) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{RECORD_AUDIO_PERMISSION}, REQUEST_RECORD_AUDIO_PERMISSION);
             return false;
         }
     }
