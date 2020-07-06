@@ -114,8 +114,6 @@ public class MainActivity extends AppCompatActivity {
         // Drawer content item selected listener
         setupDrawerContent(mDrawerNavigationView);
 
-        // Setup ViewModel for MainActivity
-        MainActivityViewModel viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
     }
 
     private void setDefaultFragment() {

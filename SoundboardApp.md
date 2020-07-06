@@ -65,6 +65,10 @@
 ## Accessing external storage
 - https://developer.android.com/training/data-storage/shared/documents-files
 - https://developer.android.com/training/data-storage/shared/media#java
+- https://commonsware.com/blog/2016/03/15/how-consume-content-uri.html
+- https://developer.android.com/reference/android/content/ContentResolver#openFileDescriptor(android.net.Uri,%20java.lang.String)
+- https://stackoverflow.com/questions/5568874/how-to-extract-the-file-name-from-uri-returned-from-intent-action-get-content
+- https://stackoverflow.com/questions/58430070/android-apiv29-filenotfoundexception-eacces-permission-denied
 
         - In manifest, get permission: READ_EXTERNAL_STORAGE
         - In code, ask user for permission (for api23+ devices)

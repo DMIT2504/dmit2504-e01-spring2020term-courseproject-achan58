@@ -8,9 +8,12 @@ import java.util.List;
 
 public class MainActivityViewModel extends ViewModel {
 
-    private MutableLiveData<List<Pad>> padsList = new MutableLiveData<List<Pad>>();
+    private MutableLiveData<List<Pad>> padsList;
 
     public LiveData<List<Pad>> getPads() {
+        if (padsList == null) {
+            padsList = new MutableLiveData<List<Pad>>();
+        }
         return padsList;
     }
 

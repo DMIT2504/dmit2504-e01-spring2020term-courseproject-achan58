@@ -2,12 +2,14 @@ package ca.nait.dmit2504.soundboardapp;
 
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
@@ -42,7 +44,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private View mView;
     private Pad mPad;
     private List<Pad> mPadList;
-    private MediaPlayer mMediaPlayer;
 
     @Nullable
     @Override
@@ -63,8 +64,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         mD2ImageButton = mView.findViewById(R.id.launchpad_D2_imageButton);
         mD3ImageButton = mView.findViewById(R.id.launchpad_D3_imageButton);
         mPad = new Pad();
-        mPadList = new ArrayList<>();
-        mMediaPlayer = new MediaPlayer();
+
+        // Setup list of pad to have 12 empty pads
+        if (mPadList == null) {
+            mPadList = new ArrayList<>();
+            for (int i = 0; i < 12; i++) {
+                Pad emptyPad = new Pad();
+                emptyPad.setActive(false);
+                mPadList.add(emptyPad);
+            }
+        }
 
         // Set onClickListeners using method reference operators (::)
         mA1ImageButton.setOnClickListener(this::onClick);
@@ -83,33 +92,65 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         return mView;
     }
 
-    // onActivityCreated because the lifecycle of a fragment goes onDestroyView -> onCreateView. We let the onCreateView complete first by coding in onActivityCreated
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mMainActivityViewModel = ViewModelProviders.of(getActivity()).get(MainActivityViewModel.class);
-
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mMainActivityViewModel = new ViewModelProvider(requireActivity()).get(MainActivityViewModel.class);
         // Load default audio clips to launchpad
         getDefaultAudio();
 
         // getViewLifecycleOwner instead of this so that the observer is not bound to the instance of the fragment, allowing it to be unbound when fragment view is destroyed
         mMainActivityViewModel.getPads().observe(getViewLifecycleOwner(), pads -> {
-            // Clear defaults, release their MediaPlayers
-            for (Pad pad : mPadList){
-                pad.getPadPlayer().release();
-            }
-            mPadList.clear();
             mPadList = pads;
-            // TODO: Get MediaPlayer to prepare files sent from Setup
+            for (Pad pad : mPadList) {
+                // If pad has selected audio, setup MediaPlayer for pad
+                if (pad.isActive()) {
+                    MediaPlayer mediaPlayer = new MediaPlayer();
+
+                    // If default audio, setup using AssetFileDescriptor, else setup with uri
+                    if (pad.isDefaultAudio()) {
+                        AssetFileDescriptor assetFileDescriptor;
+                        assetFileDescriptor = pad.getDefaultAudioAssetFileDescriptor();
+                        try {
+                            mediaPlayer.setDataSource(
+                                    assetFileDescriptor.getFileDescriptor(),
+                                    assetFileDescriptor.getStartOffset(),
+                                    assetFileDescriptor.getLength());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Uri uri;
+                        uri = pad.getPadPlayerUri();
+                        try {
+                            mediaPlayer.setDataSource(getActivity(), uri);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    mediaPlayer.prepareAsync();
+                    pad.setPadPlayer(mediaPlayer);
+                } else {
+                    // else set MediaPlayer to null
+                    pad.setPadPlayer(null);
+                }
+            }
         });
     }
 
     @Override
     public void onStop() {
         super.onStop();
+
+        // Send List<Pad> to ModelView to maintain items
+        mMainActivityViewModel.setPads(mPadList);
+
         // Release resources when switching fragments
         for (Pad pad : mPadList){
-            pad.getPadPlayer().release();
+            if (pad.getPadPlayer() != null) {
+                pad.getPadPlayer().release();
+                pad.setPadPlayer(null);
+            }
         }
     }
 
@@ -117,37 +158,32 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         try {
             List<String> defaultAudioPaths = new ArrayList<>();
             defaultAudioPaths = getAssetFiles("");
-//            int index = 0;
 
             // Set to < 4 because there are currently only 3 default audio files in assets
             if (defaultAudioPaths.size() > 0 && defaultAudioPaths.size() < 4){
+                int index = 0;
                 for (String defaultAudioPath : defaultAudioPaths){
+                    // Only set default audio MediaPlayers to empty pads
+                    if (!mPadList.get(index).isActive()) {
+                        MediaPlayer mediaPlayer = new MediaPlayer();
+                        // getActivity() gets Activity context for getAssets to work
+                        AssetFileDescriptor assetFileDescriptor = getActivity().getAssets().openFd(defaultAudioPath);
 
-                    MediaPlayer mediaPlayer = new MediaPlayer();
-                    // getActivity() gets Activity context for getAssets to work
-                    AssetFileDescriptor assetFileDescriptor = getActivity().getAssets().openFd(defaultAudioPath);
+                        mPad = new Pad();
+                        mediaPlayer = new MediaPlayer();
+                        mediaPlayer.setDataSource(
+                                assetFileDescriptor.getFileDescriptor(),
+                                assetFileDescriptor.getStartOffset(),
+                                assetFileDescriptor.getLength());
+                        mediaPlayer.prepareAsync();
+                        mPad.setPadPlayer(mediaPlayer);
+                        mPad.setActive(true);
+                        mPad.setDefaultAudio(true);
+                        mPad.setDefaultAudioAssetFileDescriptor(assetFileDescriptor);
 
-                    mPad = new Pad();
-                    mediaPlayer = new MediaPlayer();
-                    mediaPlayer.setDataSource(assetFileDescriptor.getFileDescriptor(), assetFileDescriptor.getStartOffset(), assetFileDescriptor.getLength());
-                    mediaPlayer.prepareAsync();
-                    mPad.setPadPlayer(mediaPlayer);
-
-//                    switch (index) {
-//                        case 0:
-//                            mPad.setPadIdentifier(getString(R.string.a1));
-//                            break;
-//                        case 1:
-//                            mPad.setPadIdentifier(getString(R.string.a2));
-//                            break;
-//                        case 2:
-//                            mPad.setPadIdentifier(getString(R.string.a3));
-//                            break;
-//                        default:
-//                            break;
-//                    }
-                    mPadList.add(mPad);
-//                    index++;
+                        mPadList.set(index, mPad);
+                    }
+                    index++;
                 }
             } else {
                 Log.d(TAG, getString(R.string.no_default_audio_found));
@@ -221,11 +257,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void startStopMediaPlayer(MediaPlayer padPlayer) {
-        if (padPlayer.isPlaying()) {
-            padPlayer.stop();
-            padPlayer.prepareAsync();
-        } else {
-            padPlayer.start();
+        // Check if pad has MediaPlayer (Prevents MediaPlayer.isPlaying() on null object)
+        if (padPlayer != null) {
+            if (padPlayer.isPlaying()) {
+                padPlayer.stop();
+                padPlayer.prepareAsync();
+            } else {
+                padPlayer.start();
+            }
         }
     }
 }
