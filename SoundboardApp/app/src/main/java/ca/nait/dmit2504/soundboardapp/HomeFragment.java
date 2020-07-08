@@ -100,6 +100,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mMainActivityViewModel = new ViewModelProvider(requireActivity()).get(MainActivityViewModel.class);
+
         // Load default audio clips to launchpad
         getDefaultAudio();
 
@@ -107,6 +108,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         mMainActivityViewModel.getPads().observe(getViewLifecycleOwner(), pads -> {
             mPadList = pads;
             for (Pad pad : mPadList) {
+
                 // If pad has selected audio, setup MediaPlayer for pad
                 if (pad.isActive()) {
                     MediaPlayer mediaPlayer = new MediaPlayer();
@@ -226,10 +228,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             case R.id.launchpad_A1_imageButton:
                 // Start/Stop MediaPlayer
                 startStopMediaPlayer(mPadList.get(0).getPadPlayer(), mA1ImageButton);
-//                mPadList.get(0).getPadPlayer().setOnCompletionListener(mp -> {
-//                    mA1ImageButton.setImageDrawable(getResources().getDrawable(R.drawable.launchpad_button_black_a1));
-//                    mA1ImageButton.setBackgroundColor(getResources().getColor(R.color.background_black));
-//                });
                 break;
             case R.id.launchpad_A2_imageButton:
                 startStopMediaPlayer(mPadList.get(1).getPadPlayer(), mA2ImageButton);
@@ -277,9 +275,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 padPlayer.prepareAsync();
             } else {
                 padPlayer.start();
-//                // Change button image and background
-//                imageButton.setImageDrawable(getResources().getDrawable(R.drawable.launchpad_button_black_green_clicked));
-//                imageButton.setBackgroundColor(getResources().getColor(R.color.background_black));
             }
         }
     }

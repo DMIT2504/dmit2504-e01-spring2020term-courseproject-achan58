@@ -85,6 +85,14 @@ ___
         - *Warning* Android 10+ has scoped storage access, cannot read/write files from/to external storage directly
         - get permission
         - startActivityForResult on an Intent.ACTION_GET_CONTENT (allows user to choose file)
+        
+                mUploadFileIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                mUploadFileIntent.addCategory(Intent.CATEGORY_OPENABLE);
+                mUploadFileIntent.setType("audio/*");
+                startActivityForResult(Intent.createChooser(mUploadFileIntent, getText(R.string.upload_audio_file)), REQUEST_CODE);
+
+                *setType is the MIME-type you are looking for. Here I am looking for audio types of any (*) file extension
+
         - obtain results in onActivityReult method
         - check result code and request codes
 
@@ -143,6 +151,56 @@ ___
 
                 *files-path is exclusively for internal storage, use external-path for external storage
                 **yourdomainhere = build.gradle app -> applicationId
+
+
+##  Simple example of grabbing audio file from internal storage and playing it
+___
+Step 1: Putting files into internal storage
+
+        - View > Tool Windows > Device File Explorer
+![Opening Defice File Manager](./README_img/putting_file_into_emulator1.png)
+
+        - storage > self > primary > Music
+        - Right-click the folder and select upload
+![Locating internal storage](./README_img/putting_file_into_emulator2.png)
+        
+        * Note: Device File Explorer requires an emulator to be running to access its files
+
+Step 2: Have user pick the file
+
+```
+mUploadFileIntent = new Intent(Intent.ACTION_GET_CONTENT);
+mUploadFileIntent.addCategory(Intent.CATEGORY_OPENABLE);
+mUploadFileIntent.setType("audio/*");
+startActivityForResult(
+        Intent.createChooser(mUploadFileIntent, 
+        getText(R.string.upload_audio_file)), 
+        REQUEST_CODE
+);
+```
+        * setType refers to a MIME-type, * is wildcard, request code is any integer
+
+
+Step 3: Grab data from user selected file and play it
+
+```
+@Override
+public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    if (resultCode == RESULT_OK) {
+        Audio audio = new Audio();
+        Uri uri = data.getData();
+
+        switch (REQUEST_CODE) {
+            audio.setAudioPlayerUri(uri);
+            audio.prepareAsync();
+            audio.start();
+            break;
+        }
+    }
+}
+```
+
+
 
 ## Color locations:
 ___

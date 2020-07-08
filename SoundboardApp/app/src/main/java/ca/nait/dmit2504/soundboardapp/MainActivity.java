@@ -56,9 +56,6 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_files_fragment:
                         fragmentClass = SetupFragment.class;
                         break;
-                    case R.id.nav_settings_fragment:
-                        fragmentClass = SettingsFragment.class;
-                        break;
                     default:
                         fragmentClass = HomeFragment.class;
                 }
