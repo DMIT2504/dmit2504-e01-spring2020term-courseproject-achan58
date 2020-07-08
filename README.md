@@ -113,18 +113,21 @@ startActivityForResult(Intent.createChooser(mUploadFileIntent, getText(R.string.
 ___
         - In manifest get permission: RECORD_AUDIO
         - In code, ask user for permission
-        - MediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
-        - MediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)  (this file format was used in documentation)
-        - MediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)    (used in documentation)
-
+```Java
+- MediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
+- MediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)  (this file format was used in documentation)
+- MediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)    (used in documentation)
+```
         - API 26+: MediaRecorder.setOutputFile(destinationPath, fileName)
         
-        - MediaRecorder.setOutputFile(path + "/" + fileName)
-        - MediaRecorder.prepare()
-        - MediaRecorder.start()
-        - MediaRecorder.stop()
-        - MediaRecorder.Release()
-        - MediaRecorder = null
+```Java
+- MediaRecorder.setOutputFile(path + "/" + fileName)
+- MediaRecorder.prepare()
+- MediaRecorder.start()
+- MediaRecorder.stop()
+- MediaRecorder.Release()
+- MediaRecorder = null
+```
 
 
 # Accessing internal storage for uri (Uri.fromFile and FileProvider)
@@ -207,19 +210,19 @@ Uri uri;
 public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 	super.onActivityResult(requestCode, resultCode, data);
     if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case UPLOAD_REQUEST_CODE:
-                uri = data.getData();
-                break;
-            }
-        }
+		switch (requestCode) {
+			case UPLOAD_REQUEST_CODE:
+			uri = data.getData();
+			break;
+		}
+	}
 }
 ```
 
 Step 4: Play audio once prepared, stop and reset if playing
 
 ```Java
- MediaPlayer mediaPlayer = new MediaPlayer();
+MediaPlayer mediaPlayer = new MediaPlayer();
 
 onClickListener...{
 ...
