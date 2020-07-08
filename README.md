@@ -86,12 +86,14 @@ ___
         - get permission
         - startActivityForResult on an Intent.ACTION_GET_CONTENT (allows user to choose file)
         
-                mUploadFileIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                mUploadFileIntent.addCategory(Intent.CATEGORY_OPENABLE);
-                mUploadFileIntent.setType("audio/*");
-                startActivityForResult(Intent.createChooser(mUploadFileIntent, getText(R.string.upload_audio_file)), REQUEST_CODE);
+```Java
+mUploadFileIntent = new Intent(Intent.ACTION_GET_CONTENT);
+mUploadFileIntent.addCategory(Intent.CATEGORY_OPENABLE);
+mUploadFileIntent.setType("audio/*");
+startActivityForResult(Intent.createChooser(mUploadFileIntent, getText(R.string.upload_audio_file)), REQUEST_CODE);
+```
 
-                *setType is the MIME-type you are looking for. Here I am looking for audio types of any (*) file extension
+        *setType is the MIME-type you are looking for. Here I am looking for audio types of any (*) file extension
 
         - obtain results in onActivityReult method
         - check result code and request codes
@@ -133,24 +135,33 @@ ___
         
         - Using FileProvider to get content uri
                 - in res/xml create an xml with:
-                        <paths xmlns:android="http://schemas.android.com/apk/res/android">
-                                *<files-path name="name" path="path"/>
-                        </paths>
+```Java
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+        *<files-path name="name" path="path"/>
+</paths>
+```
                 - where name is any name (used to hide true path) and path is subdirectory in files/, if not accessing a subdirectory, path="/"
                 - in manifest > application, set a: 
-                        <provider
-                                android:authorities="yourdomainhere.fileprovider"
-                                android:name="androidx.core.content.FileProvider"
-                                android:exported="false"
-                                android:grantUriPermissions="true">
-                                        <meta-data
-                                                android:name="android.support.FILE_PROVIDER_PATHS"
-                                                android:resource="@xml/file_paths" />
-                        </provider>
-                - In code, uri = FileProvider.getUriForFile(context, "yourdomainhere.fileprovider", File)
+```Java
+<provider
+        android:authorities="yourdomainhere.fileprovider"
+        android:name="androidx.core.content.FileProvider"
+        android:exported="false"
+        android:grantUriPermissions="true">
+                <meta-data
+                        android:name="android.support.FILE_PROVIDER_PATHS"
+                        android:resource="@xml/file_paths" />
+</provider>
+```
+                - In code:
+```Java
+uri = FileProvider.getUriForFile(context, "yourdomainhere.fileprovider", File)
+```
 
-                *files-path is exclusively for internal storage, use external-path for external storage
-                **yourdomainhere = build.gradle app -> applicationId
+        *files-path is exclusively for internal storage, use external-path for external storage
+        **yourdomainhere = build.gradle app -> applicationId
+
+
 
 
 ##  Simple example of grabbing audio file from internal storage and playing it
@@ -168,7 +179,7 @@ Step 1: Putting files into internal storage
 
 Step 2: Have user pick the file
 
-```
+```Java
 mUploadFileIntent = new Intent(Intent.ACTION_GET_CONTENT);
 mUploadFileIntent.addCategory(Intent.CATEGORY_OPENABLE);
 mUploadFileIntent.setType("audio/*");
@@ -183,7 +194,7 @@ startActivityForResult(
 
 Step 3: Grab data from user selected file and play it
 
-```
+```Java
 @Override
 public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
     if (resultCode == RESULT_OK) {
