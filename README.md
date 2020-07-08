@@ -137,20 +137,20 @@ ___
                 - in res/xml create an xml with:
 ```Java
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
-        *<files-path name="name" path="path"/>
+	*<files-path name="name" path="path"/>
 </paths>
 ```
                 - where name is any name (used to hide true path) and path is subdirectory in files/, if not accessing a subdirectory, path="/"
                 - in manifest > application, set a: 
 ```Java
 <provider
-        android:authorities="yourdomainhere.fileprovider"
-        android:name="androidx.core.content.FileProvider"
-        android:exported="false"
-        android:grantUriPermissions="true">
-                <meta-data
-                        android:name="android.support.FILE_PROVIDER_PATHS"
-                        android:resource="@xml/file_paths" />
+	android:authorities="yourdomainhere.fileprovider"
+	android:name="androidx.core.content.FileProvider"
+	android:exported="false"
+	android:grantUriPermissions="true">
+		<meta-data
+			android:name="android.support.FILE_PROVIDER_PATHS"
+			android:resource="@xml/file_paths" />
 </provider>
 ```
                 - In code:
@@ -177,37 +177,68 @@ Step 1: Putting files into internal storage
         
         * Note: Device File Explorer requires an emulator to be running to access its files
 
-Step 2: Have user pick the file
+Step 2: Have user pick the file on button press
 
 ```Java
-mUploadFileIntent = new Intent(Intent.ACTION_GET_CONTENT);
-mUploadFileIntent.addCategory(Intent.CATEGORY_OPENABLE);
-mUploadFileIntent.setType("audio/*");
-startActivityForResult(
-        Intent.createChooser(mUploadFileIntent, 
-        getText(R.string.upload_audio_file)), 
-        REQUEST_CODE
-);
+final int UPLOAD_REQUEST_CODE = 1;
+
+onClickListener...{
+...
+	Intent mUploadFileIntent = new Intent(Intent.ACTION_GET_CONTENT);
+	mUploadFileIntent.addCategory(Intent.CATEGORY_OPENABLE);
+	mUploadFileIntent.setType("audio/*");
+	startActivityForResult(
+		Intent.createChooser(
+			mUploadFileIntent,
+			"Select an audio file."),
+			UPLOAD_REQUEST_CODE
+	);
+}
 ```
         * setType refers to a MIME-type, * is wildcard, request code is any integer
 
 
-Step 3: Grab data from user selected file and play it
+Step 3: Grab data from user selected file
 
 ```Java
+Uri uri;
+
 @Override
 public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+	super.onActivityResult(requestCode, resultCode, data);
     if (resultCode == RESULT_OK) {
-        Audio audio = new Audio();
-        Uri uri = data.getData();
-
-        switch (REQUEST_CODE) {
-            audio.setAudioPlayerUri(uri);
-            audio.prepareAsync();
-            audio.start();
-            break;
+            switch (requestCode) {
+                case UPLOAD_REQUEST_CODE:
+                uri = data.getData();
+                break;
+            }
         }
-    }
+}
+```
+
+Step 4: Play audio once prepared, stop and reset if playing
+
+```Java
+ MediaPlayer mediaPlayer = new MediaPlayer();
+
+onClickListener...{
+...
+if (!mediaPlayer.isPlaying()) {
+	try {
+		mediaPlayer.setDataSource(this, mUri);
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+	mediaPlayer.prepareAsync();
+	mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+		@Override
+		public void onPrepared(MediaPlayer mp) {
+			mediaPlayer.start();
+		}
+	});
+} else {
+	mediaPlayer.stop();
+	mediaPlayer.reset();
 }
 ```
 
