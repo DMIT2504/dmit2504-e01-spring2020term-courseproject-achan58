@@ -3,6 +3,7 @@ package ca.nait.dmit2504.soundboardapp;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -122,6 +123,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                     assetFileDescriptor.getFileDescriptor(),
                                     assetFileDescriptor.getStartOffset(),
                                     assetFileDescriptor.getLength());
+                            mediaPlayer.prepareAsync();
+                            pad.setPadPlayer(mediaPlayer);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -130,12 +133,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         uri = pad.getPadPlayerUri();
                         try {
                             mediaPlayer.setDataSource(getActivity(), uri);
+                            mediaPlayer.prepareAsync();
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setSpeed(pad.getSpeedMod()));
+                                mediaPlayer.setPlaybackParams(mediaPlayer.getPlaybackParams().setPitch(pad.getPitchMod()));
+                            }
+                            pad.setPadPlayer(mediaPlayer);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
-                    mediaPlayer.prepareAsync();
-                    pad.setPadPlayer(mediaPlayer);
                 } else {
                     // else set MediaPlayer to null
                     pad.setPadPlayer(null);

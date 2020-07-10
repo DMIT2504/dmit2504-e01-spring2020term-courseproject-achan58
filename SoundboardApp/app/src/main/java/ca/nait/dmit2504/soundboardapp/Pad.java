@@ -13,6 +13,8 @@ public class Pad {
     private MediaPlayer padPlayer;
     private boolean defaultAudio;
     private AssetFileDescriptor defaultAudioAssetFileDescriptor;
+    private float speedMod;
+    private float pitchMod;
 
     public boolean isActive() { return active; }
 
@@ -50,5 +52,21 @@ public class Pad {
 
     public void setDefaultAudioAssetFileDescriptor(AssetFileDescriptor defaultAudioAssetFileDescriptor) {
         this.defaultAudioAssetFileDescriptor = defaultAudioAssetFileDescriptor;
+    }
+
+    public float getSpeedMod() {
+        return speedMod;
+    }
+
+    public void setSpeedMod(float speedMod) {
+        this.speedMod = speedMod;
+    }
+
+    public float getPitchMod() {
+        return pitchMod;
+    }
+
+    public void setPitchMod(float pitchMod) {
+        this.pitchMod = pitchMod;
     }
 }

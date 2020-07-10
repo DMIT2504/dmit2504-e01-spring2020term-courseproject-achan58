@@ -114,6 +114,8 @@ public class SetupFragment extends Fragment {
                 int audioPosition = mAudioSpinner.getSelectedItemPosition();
                 pad.setActive(true);
                 pad.setPadPlayerUri(mAudioList.get(audioPosition).getAudioPlayerUri());
+                pad.setSpeedMod(mAudioList.get(audioPosition).getSpeedMod());
+                pad.setPitchMod(mAudioList.get(audioPosition).getPitchMod());
             }
             // By replacing the pad in the List<Pad>, we don't need to worry about if it contained default audio values
             mPadList.set(padPosition, pad);

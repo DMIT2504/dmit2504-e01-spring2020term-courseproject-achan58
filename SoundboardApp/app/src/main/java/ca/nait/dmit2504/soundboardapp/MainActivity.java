@@ -56,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_files_fragment:
                         fragmentClass = SetupFragment.class;
                         break;
+                    case R.id.nav_editor_fragment:
+                        fragmentClass = AudioEditorFragment.class;
+                        break;
                     default:
                         fragmentClass = HomeFragment.class;
                 }

@@ -52,4 +52,14 @@
     <string name="audio_spinner_item">audio_spinner_item</string>
     <string name="audio_and_pad_bound">Audio and pad bound</string>
     <string name="this_file_already_exists">This file already exists.</string>
+    <string name="audio_editor">Audio Editor</string>
+    <string name="audio_file_name">Audio File Name</string>
+    <string name="speed">Speed</string>
+    <string name="pitch">Pitch</string>
+    <string name="select_a_song_to_edit">Select a Song to Edit</string>
+    <string name="save">save</string>
+    <string name="play_pause">Play/Pause</string>
+    <string name="elapsed_time">Elapsed Time</string>
+    <string name="remaining_time">Remaining Time</string>
+    <string name="successfully_saved_please_rebind_to_pad">Successfully saved, please rebind to pad</string>
 </resources>
